@@ -1,16 +1,8 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <!--<link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />-->
-    <!--<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
-    <!--<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>-->
-    <!--<script src="/webjars/bower/popper/1.15.0/popper.min.js"></script>-->
     <title>Aa tutorials</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -35,14 +27,11 @@
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="50">
 
 <nav class="navbar navbar-expand-sm navbar-dark fixed-top" style="background-color: #2a6b01;">
-    <a class="btn btn-light" href="#"><b>aacodes Tutorials</b></a>
+    <a class="btn btn-light" href="/"><b>aacodes Tutorials</b></a>
     <div class="collapse navbar-collapse" id="horizontalNavBar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
             </li>
         </ul>
 
@@ -73,7 +62,6 @@
                     </nav>
                 </nav>
             </div>
-            <!--</nav>-->
         </nav>
         <div class="col-sm-9">
             <h1 id="section1">1. A Simple Distributed System</h1>
@@ -81,7 +69,7 @@
                 <br>
                 <h3>1.1. Summary</h3>
                 <p>The project is an example of a distributed system where concurrent incoming http requests are load
-                    balanced by a client program called chorano-client among a set of servers called chorano-servers in
+                    balanced by a <code>client program called chorano-client</code> among <code>a set of servers called chorano-servers</code> in
                     a round-robin fashion. The chorano-servers register themselves to zookeeper server and the
                     chorano-client talks to zookeeper server to route the http requests to the active/alive
                     chorano-servers.
@@ -89,7 +77,7 @@
                     The project consists of two modules with a parent pom file at the root.
                     <br>
                     <b>Module 1 (chorano-client):</b> A simple client program that uses the zookeeper client object to
-                    find the currently active/registered chorano-servers in zookeeper. It then load balances the HTTP
+                    find the currently active or registered chorano-servers in zookeeper. It then load balances the HTTP
                     request by cycling through the active chorano servers (similar to round-robin). The http requests
                     are built and sent by a JAX-RS Jersey client.
                     <br>
@@ -105,7 +93,7 @@
                 <p>
                     Whenever we start a chorano-server, the server program register itself in zookeeper under the root
                     path or znode <code>/chorano</code> as a child (e.g. <code>/chorano/x_1</code>) via the zookeeper
-                    client object. Then it keeps on listening to a port for incoming streams of data. The /chorano is a
+                    client object. Then it keeps on listening to a port for incoming streams of data. The <code>/chorano</code> is a
                     persistent node in zookeeper
                     while the children znodes(servers) e.g. <code>x_1</code> are ephemeral znode. This means when a
                     server is shut down the corresponding znode disappears in zookeeper. On the other hand, the
@@ -117,7 +105,7 @@
                     This is okay since both the client and server code will be maintained by the same developer(s). As
                     soon as the
                     chorano-client gets notified it updates the list of active servers so that subsequent http requests
-                    are sent only them. When all the servers are shutdown the client exits.
+                    are sent only to them. When all the servers are shutdown the client exits.
                 </p>
                 <br>
             </div>
@@ -128,7 +116,7 @@
                     we will load balance the http requests to the three chorano-servers. We will shutdown the servers
                     one by one and observe how the client keeps routing the requests only to the active servers.
 
-                    Cloning and building the project:
+                <p><b>Cloning and building the project:</b></p>
 
                     Clone or download the project from github <a href="https://github.com/aacodes/chorano"> chorano </a>.
                     The properties files are located at:
@@ -201,6 +189,7 @@ DEBUG ChoranoServer - Starting the chorano server so that it keeps listening to 
                 <b>Go to a third terminal (Terminal-3)</b>
                 <br>
                 <code>
+                    cd choranoserver/target/<br>
                     java -jar chorano-server.jar<br>
                 </code>
 
@@ -214,7 +203,7 @@ DEBUG ChoranoServer - Starting the chorano server so that it keeps listening to 
 </samp>
 </pre>
 
-                Notice that the ports are 8111, 8112 and 8113 in the three terminals respectively. This setup is
+                Notice that the ports are <code>8111, 8112 and 8113</code> in the three terminals above respectively. This setup is
                 similar to a distributed environment with three machines each running a chorano-server.
                 <br>
                 <br>
@@ -223,7 +212,7 @@ DEBUG ChoranoServer - Starting the chorano server so that it keeps listening to 
                 <b>Go to a fourth terminal (Terminal-4)</b>
                 <br>
                 <code>
-                    cd choranoclient/target
+                    cd choranoclient/target <br>
                     java -jar chorano-client.jar
                 </code>
 
@@ -238,8 +227,8 @@ DEBUG ChoranoClient - server: x_0000000055 location: localhost:8113
 </pre>
 
                 Notice that the client has already detected the presence of 3 servers by talking to the zookeeper
-                server via the zookeeper client. It will then began sending the http requests to each of the server
-                located at port 8111, 8112 and 8113.
+                server via the zookeeper client. <b>It will then began sending the http requests to each of the server
+                located at port 8111, 8112 and 8113.</b>
 
                 <pre>
 <samp>
@@ -272,6 +261,7 @@ DEBUG HttpRequestHandler - POST / HTTP/1.1Content-Type: text/plainUser-Agent: Je
                 Let us shut down server-1 located at port 8111 by pressing ctrl+c at the terminal (terminal-1). We
                 will see that the shutdown is detected by the chorano-client and subsequently http requests are
                 routed to only 8112(server-2) and 8113 (server-3).
+                <br>
                 <br><b>Following is the log from chorano-client terminal(terminal-4)</b>
 
                 <pre>
@@ -303,6 +293,7 @@ DEBUG ClientRequestServiceImpl - Sending http request no. 17 to chorano server: 
                 Let us start the first server again from terminal-1. Following is the log:
                 <br>
                 <code>
+                    cd choranoclient/target <br>
                     java -jar chorano-server.jar
                 </code>
 
@@ -331,7 +322,7 @@ DEBUG ClientRequestServiceImpl - Node: /chorano/x_0000000059 Response entity: Se
 </samp></pre>
 
 
-                <b>Notes: Ssh tunnelling might be required if the zookeeper server is located in a VM.</b>
+                <b>Notes: ssh tunnelling might be required if the zookeeper server is located in a VM.</b>
                 <br>
                 <code>
                     e.g. ssh -L 2181:localhost:2181 &lt;user&gt;@&lt;machine&gt;
@@ -345,8 +336,8 @@ DEBUG ClientRequestServiceImpl - Node: /chorano/x_0000000059 Response entity: Se
                 When the server finds a “stop” keyword in its request body it signals the main server thread
                 to exit, thereby shutting down the chorano-server.
 
-                <br><b>To learn more about <a href="https://zookeeper.apache.org/doc/current/zookeeperStarted.html">
-                zookeeper server, client and watchers</a> Quick <a href="https://www.baeldung.com/java-zookeeper">tutorial </a>
+                <br><b>To learn more about <a href="https://zookeeper.apache.org/doc/current/zookeeperStarted.html" target="_blank">
+                zookeeper server, client and watchers</a> Quick <a href="https://www.baeldung.com/java-zookeeper" target="_blank">tutorial </a>
                 on how to use the
                 zookeeper client.</b>
 
@@ -370,7 +361,7 @@ DEBUG ClientRequestServiceImpl - Node: /chorano/x_0000000059 Response entity: Se
             <div>
                 <br>
                 <h3 id="section22">2.2. Working with the project </h3>
-                Build and run the project from the root directory <code>learner/</code>.
+                Build and run the <a href="https://github.com/aacodes/learner" target="_blank">github project</a> from the root directory <code>learner/</code>.
 
                 <b>NOTE:</b> The indexer jar file needs to be run first so that it can start consuming messages as soon as they
                 are published in the target topic by the learner app. More explanation in the summary section below.
@@ -381,8 +372,8 @@ DEBUG ClientRequestServiceImpl - Node: /chorano/x_0000000059 Response entity: Se
                     java -jar learner/target/learner-0.1.0.jar <br>
                 </code>
                 <br>
-                <b>Kafka Setup:</b> More info This setup assumes you have already setup a zookeeper server with client port
-                2181. Create a topic named “solr-vehicles-topic”
+                <b>Kafka <a href="https://kafka.apache.org/quickstart" target="_blank">Setup:</a></b> Before proceeding setup a zookeeper server with client port.
+                2181. Now create a topic named “solr-vehicles-topic”
                 <br>
                 <code>
                     bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1
@@ -396,7 +387,9 @@ DEBUG ClientRequestServiceImpl - Node: /chorano/x_0000000059 Response entity: Se
                     bin/kafka-topics.sh --list --zookeeper localhost:2181
                 </code>
                 <br>
-                <b># Solr Setup:</b> More info Create a collection named "vehicles" with the default configsets.
+                <br>
+                <b># Solr <a href="https://lucene.apache.org/solr/guide/7_5/installing-solr.html" target="_blank"> Setup:</a></b>
+                Create a collection named "vehicles" with the default configsets.
 
                 Add the following to the solr schema ("managed-schema"):
 
@@ -415,9 +408,8 @@ DEBUG ClientRequestServiceImpl - Node: /chorano/x_0000000059 Response entity: Se
 &lt;copyField source=&quot;brand&quot; dest=&quot;search&quot; maxChars=&quot;25000&quot; /&gt;
                 </pre>
 
-                Add the deftType=edismax and the default search field df=search and boost on the ckcount(click count) to
-                the solrconfig.xml.
-                Portion of the <code>/select</code> request handler:
+                Add the <code>defType=edismax</code> and the default search field <code>df=search</code> and boost on the <code>ckcount</code>(click count) field.
+                Here is the portion of the modified <code>/select</code> request handler in the solrconfig.xml:
                 <pre>
                 <br>
 &lt;requestHandler name=&quot;/select&quot; class=&quot;solr.SearchHandler&quot;&gt;
